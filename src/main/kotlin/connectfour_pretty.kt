@@ -1,4 +1,5 @@
 import java.util.concurrent.TimeUnit
+
 /************************************************************
  *  Name:         Christina Phan
  *  Date:         2021/11/20
@@ -97,8 +98,8 @@ fun selectMenu(options: Array<String>): Int {
         println("${options.indexOf(option) + 1}. $option")
     }
     do {
-    print("Please enter your selection: ")
-    choice = readLine()!!.toIntOrNull()
+        print("Please enter your selection: ")
+        choice = readLine()!!.toIntOrNull()
         if (choice == null) {
             println("Please try again.")
         }
@@ -203,8 +204,7 @@ fun checkHorizontal(row: Int, ch: String): Pair<Boolean, List<Pair<Int, Int>>> {
         } else {
             if (largestCharCounter >= 4) {
                 reset = true
-            }
-            else {
+            } else {
                 winningHorizontal.clear()
             }
             charCounter = 0
@@ -229,9 +229,9 @@ fun checkVertical(col: Int, ch: String): Pair<Boolean, List<Pair<Int, Int>>> {
     while (row in gameBoard.indices && charCounter != 4) {
         if (gameBoard[row][col] == ch) {
             charCounter++
-                winningVertical += Pair(row, col)
+            winningVertical += Pair(row, col)
         } else {
-                winningVertical.clear()
+            winningVertical.clear()
             charCounter = 0
         }
         row--
@@ -310,8 +310,7 @@ fun checkDiagonal(row: Int, col: Int, ch: String): Pair<Boolean, List<Pair<Int, 
                 charCounter = 0
                 if (largestCharCounter >= 4) {
                     reset = true
-                }
-                else {
+                } else {
                     winningDiagonal.clear()
                 }
             }
@@ -409,9 +408,15 @@ fun playerMove(player: String): Boolean {
     var pickCol: Int
     var pickedRow = 0
     var played = false
-    print("Select a column to place your piece ($player): ")
     do {
-        pickCol = readLine()!!.toInt() - 1
+        do {
+            print("Select a column to place your piece ($player): ")
+            pickCol = try {
+                readLine()!!.toInt() - 1
+            } catch (e: NumberFormatException) {
+                -1
+            }
+        } while (pickCol == -1)
         if (validateMove(pickCol).first) {
             pickedRow = validateMove(pickCol).second
             gameBoard[pickedRow][pickCol] = player
